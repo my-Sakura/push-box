@@ -1,24 +1,26 @@
 package main
 
 import (
-	"github.com/nsf/termbox-go"
 	"fmt"
 	"os"
 	"os/exec"
+
+	"github.com/nsf/termbox-go"
 )
 
 const (
 	W = 7
 	H = 8
-  )
+)
+
 var (
 	GameMap = [W][H]int{
-		{0, 0, 0, 2, 0, 0, 0, 0}, 
-		{0, 0, 3, 3, 3, 0, 0, 0}, 
-		{0, 0, 0, 0, 0, 0, 0, 0}, 
-		{1, 1, 0, 0, 0, 1, 1, 1}, 
-		{0, 0, 0, 0, 0, 0, 0, 0}, 
-		{0, 0, 0, 0, 0, 0, 0, 0}, 
+		{0, 0, 0, 2, 0, 0, 0, 0},
+		{0, 0, 3, 3, 3, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 1, 0, 0, 0, 1, 1, 1},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 4, 4, 4},
 	}
 )
@@ -46,24 +48,22 @@ func initMap() {
 		fmt.Println()
 	}
 }
-	
 
-	func main() {		
-			err := termbox.Init()
-			if err != nil {
-				panic(err)
-			}
-			defer termbox.Close()
-		
-		//clean control 
-		
-		initMap()
-		var flag bool = true
-		for flag {
-		Control(&flag)
-		}
+func main() {
+	err := termbox.Init()
+	if err != nil {
+		panic(err)
 	}
+	defer termbox.Close()
 
+	//clean control
+
+	initMap()
+	var flag bool = true
+	for flag {
+		Control(&flag)
+	}
+}
 
 func changeMap() {
 	cmd := exec.Command("clear")
@@ -91,10 +91,10 @@ func Control(flag *bool) {
 	}
 
 	//keyboard input
-	label:
+label:
 	switch ev := termbox.PollEvent(); ev.Type {
 	case termbox.EventKey:
-		switch ev.Key{
+		switch ev.Key {
 		case termbox.KeyArrowUp:
 			if col < 1 {
 				goto label
@@ -102,11 +102,11 @@ func Control(flag *bool) {
 
 			if GameMap[col-1][raw] == 0 || GameMap[col-1][raw] == 4 {
 				GameMap[col][raw] -= 2
-				GameMap[col-1][raw] += 2 
-				changeMap()	
+				GameMap[col-1][raw] += 2
+				changeMap()
 				if GameMap[6][5] == 7 && GameMap[6][6] == 7 && GameMap[6][7] == 7 {
-					complated()							
-				}						
+					complated()
+				}
 			} else if GameMap[col-1][raw] == 3 || GameMap[col-1][raw] == 7 {
 				if col == 1 {
 					goto label
@@ -115,11 +115,11 @@ func Control(flag *bool) {
 					GameMap[col][raw] -= 2
 					GameMap[col-1][raw] -= 1
 					GameMap[col-2][raw] += 3
-					changeMap()	
+					changeMap()
 					if GameMap[6][5] == 7 && GameMap[6][6] == 7 && GameMap[6][7] == 7 {
-						complated()							
-					}					
-				}										
+						complated()
+					}
+				}
 			}
 		case termbox.KeyArrowDown:
 			if col > 5 {
@@ -127,11 +127,11 @@ func Control(flag *bool) {
 			}
 			if GameMap[col+1][raw] == 0 || GameMap[col+1][raw] == 4 {
 				GameMap[col][raw] -= 2
-				GameMap[col+1][raw] += 2 
+				GameMap[col+1][raw] += 2
 				changeMap()
 				if GameMap[6][5] == 7 && GameMap[6][6] == 7 && GameMap[6][7] == 7 {
-					complated()							
-				}	
+					complated()
+				}
 			} else if GameMap[col+1][raw] == 3 || GameMap[col+1][raw] == 7 {
 				if col == 5 {
 					goto label
@@ -142,22 +142,22 @@ func Control(flag *bool) {
 					GameMap[col+2][raw] += 3
 					changeMap()
 					if GameMap[6][5] == 7 && GameMap[6][6] == 7 && GameMap[6][7] == 7 {
-						complated()							
-					}	
-				}										
+						complated()
+					}
+				}
 			}
-			
+
 		case termbox.KeyArrowLeft:
 			if raw < 1 {
 				goto label
 			}
 			if GameMap[col][raw-1] == 0 || GameMap[col][raw-1] == 4 {
 				GameMap[col][raw] -= 2
-				GameMap[col][raw-1] += 2 
+				GameMap[col][raw-1] += 2
 				changeMap()
 				if GameMap[6][5] == 7 && GameMap[6][6] == 7 && GameMap[6][7] == 7 {
-					complated()							
-				}	
+					complated()
+				}
 			} else if GameMap[col][raw-1] == 3 || GameMap[col][raw-1] == 7 {
 				if raw == 1 {
 					goto label
@@ -168,9 +168,9 @@ func Control(flag *bool) {
 					GameMap[col][raw-2] += 3
 					changeMap()
 					if GameMap[6][5] == 7 && GameMap[6][6] == 7 && GameMap[6][7] == 7 {
-						complated()							
-					}	
-				}										
+						complated()
+					}
+				}
 			}
 		case termbox.KeyArrowRight:
 			if raw > 6 {
@@ -178,11 +178,11 @@ func Control(flag *bool) {
 			}
 			if GameMap[col][raw+1] == 0 || GameMap[col][raw+1] == 4 {
 				GameMap[col][raw] -= 2
-				GameMap[col][raw+1] += 2 
+				GameMap[col][raw+1] += 2
 				changeMap()
 				if GameMap[6][5] == 7 && GameMap[6][6] == 7 && GameMap[6][7] == 7 {
-					complated()							
-				}	
+					complated()
+				}
 			} else if GameMap[col][raw+1] == 3 || GameMap[col][raw+1] == 7 {
 				if raw == 6 {
 					goto label
@@ -193,19 +193,19 @@ func Control(flag *bool) {
 					GameMap[col][raw+2] += 3
 					changeMap()
 					if GameMap[6][5] == 7 && GameMap[6][6] == 7 && GameMap[6][7] == 7 {
-						complated()							
-					}	
-				}										
+						complated()
+					}
+				}
 			}
 			//reset map
 		case termbox.KeyF5:
 			GameMap = [W][H]int{
-				{0, 0, 0, 2, 0, 0, 0, 0}, 
-				{0, 0, 3, 3, 3, 0, 0, 0}, 
-				{0, 0, 0, 0, 0, 0, 0, 0}, 
-				{1, 1, 0, 0, 0, 1, 1, 1}, 
-				{0, 0, 0, 0, 0, 0, 0, 0}, 
-				{0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 2, 0, 0, 0, 0},
+				{0, 0, 3, 3, 3, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0},
+				{1, 1, 0, 0, 0, 1, 1, 1},
+				{0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0},
 				{0, 0, 0, 0, 0, 4, 4, 4},
 			}
 			changeMap()
@@ -215,8 +215,3 @@ func Control(flag *bool) {
 		}
 	}
 }
-
-
-
-
-	
